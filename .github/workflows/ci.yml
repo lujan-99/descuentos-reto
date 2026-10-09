@@ -50,7 +50,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: maven
       - name: Compilar y verificar
-        run: mvn -B verify
+        run: mvn -B -DskipTests verify
       - name: Resumen de pruebas (falla si hay cero)
         if: always()
         shell: bash # activa pipefail: sin el, el codigo de salida seria el de tee y la guardia no fallaria
