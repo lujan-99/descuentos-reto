@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class CalculadoraDescuentos {
 
     public double calcularPrecioFinal(double precioOriginal, double porcentajeDescuento) {
-        if (precioOriginal < 0) {
+        if (precioOriginal <= 0) {
             throw new IllegalArgumentException("El precio original debe ser mayor que cero");
         }
         if (porcentajeDescuento < 0 || porcentajeDescuento > 100) {
