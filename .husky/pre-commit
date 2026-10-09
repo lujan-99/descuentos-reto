@@ -1,1 +1,2 @@
-npx lint-staged
+# lint-staged ejecuta las tareas desde la raiz del repo: expone los binarios de web/
+PATH="$(pwd)/web/node_modules/.bin:$PATH" npx lint-staged
