@@ -1,0 +1,17 @@
+# En cada pull request: CI completo. (En el reto no hay preview: no se despliega nada real.)
+name: PR (CI)
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml

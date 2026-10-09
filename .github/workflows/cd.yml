@@ -1,0 +1,48 @@
+# En cada push a main: CI y despliegue. En el reto el despliegue es SIMULADO (scripts/deploy-simulado.sh):
+# solo comprueba que los secretos llegan al workflow. Crea los cuatro secretos con cualquier valor, por ejemplo "simulado".
+name: CD (CI y despliegue simulado)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: cd-main
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy-api:
+    name: Desplegar API (simulado)
+    runs-on: ubuntu-latest
+    environment: api-production
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar secretos
+        run: scripts/verificar-config.sh RENDER_DEPLOY_HOOK
+      - name: Desplegar
+        run: scripts/deploy-simulado.sh "POST al deploy hook de Render"
+
+  deploy-web:
+    name: Desplegar front-end (simulado)
+    needs: deploy-api
+    runs-on: ubuntu-latest
+    environment: web-production
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKE }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar secretos
+        run: scripts/verificar-config.sh VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID
+      - name: Desplegar
+        run: scripts/deploy-simulado.sh "vercel deploy --prod"
