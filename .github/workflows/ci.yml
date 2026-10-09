@@ -47,7 +47,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '11'
+          java-version: ${{ matrix.java }}
           cache: maven
       - name: Compilar y verificar
         run: mvn -B -DskipTests verify
