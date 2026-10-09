@@ -95,7 +95,6 @@ jobs:
       - name: Formato (Prettier)
         run: npm run format:check
       - name: Pruebas con cobertura (Vitest)
-        continue-on-error: true
         run: npm run test:coverage
       - name: Build de produccion
         run: npm run build
