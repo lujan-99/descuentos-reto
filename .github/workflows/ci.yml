@@ -50,7 +50,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: maven
       - name: Compilar y verificar
-        run: mvn -B -DskipTests verify
+        run: mvn -B verify
       - name: Guardar informes de pruebas y cobertura
         if: always() && matrix.java == 17
         uses: actions/upload-artifact@v4
